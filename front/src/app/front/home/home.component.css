@@ -1,0 +1,14 @@
+#navigation li a {
+    color: white !important;
+    font-size: 18px; /* Increase size */
+    font-weight: bold; /* Make text bolder */
+}
+
+#navigation .submenu li a {
+    color: white !important;
+    font-size: 16px; /* Slightly smaller for submenu */
+}
+
+#navigation .submenu {
+    background-color: #333; /* Ensure visibility */
+}

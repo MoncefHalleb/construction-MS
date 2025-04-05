@@ -1,0 +1,85 @@
+<mat-card class="profile-wrapper mx-auto my-5 p-4 shadow rounded" style="max-width: 960px;">
+  <!-- Header -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">👤 My Profile</h2>
+    <mat-divider></mat-divider>
+  </div>
+
+  <!-- Profile Picture -->
+  <div class="d-flex flex-column align-items-center mb-4">
+    <img [src]="profilePicUrl || 'assets/default-avatar.png'"
+         class="rounded-circle shadow"
+         style="width: 120px; height: 120px; object-fit: cover;" />
+    <h4 class="mt-3">{{ userProfile.firstName }} {{ userProfile.lastName }}</h4>
+    <span class="text-muted">{{ role | uppercase }}</span>
+    <span class="text-muted small">{{ userProfile.email }}</span>
+    <span class="text-muted small">Joined: {{ formattedCreationDate }}</span>
+  </div>
+
+  <!-- Upload Picture -->
+  <div class="text-center mb-4">
+    <label class="form-label fw-semibold">📷 Update Profile Picture</label>
+    <input type="file" (change)="onFileSelected($event)" class="form-control w-auto mx-auto" />
+  </div>
+
+  <mat-divider class="mb-4"></mat-divider>
+
+  <!-- Profile Details Grid -->
+  <div class="row text-center mb-4">
+    <div class="col-md-4 mb-3">
+      <h6 class="text-muted">🆔 User ID</h6>
+      <p class="text-break">{{ userProfile.id }}</p>
+    </div>
+    <div class="col-md-4 mb-3">
+      <h6 class="text-muted">👨‍💼 Role</h6>
+      <p class="text-capitalize">{{ role }}</p>
+    </div>
+    <div class="col-md-4 mb-3">
+      <h6 class="text-muted">🕒 Last Login</h6>
+      <p>{{ lastLogin }}</p>
+    </div>
+  </div>
+
+  <!-- Login History -->
+  <div>
+    <h5 class="fw-semibold mb-3">📚 Recent Login History</h5>
+
+    <mat-table [dataSource]="loginHistory" class="mat-elevation-z2">
+      <!-- Columns -->
+
+      <ng-container matColumnDef="timestamp">
+        <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{ event.timestamp }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="ip">
+        <mat-header-cell *matHeaderCellDef> IP </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{ event.ip }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="device">
+        <mat-header-cell *matHeaderCellDef> Device </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{ event.device }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="location">
+        <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+        <mat-cell *matCellDef="let event">
+          <ng-container *ngIf="event.location?.city && event.location?.country; else fallback">
+            {{ event.location.city }}, {{ event.location.country }}
+          </ng-container>
+          <ng-template #fallback>{{ event.location }}</ng-template>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="['timestamp', 'ip', 'device', 'location']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['timestamp', 'ip', 'device', 'location'];"></mat-row>
+    </mat-table>
+  </div>
+
+  <!-- Footer Actions -->
+  <div class="d-flex justify-content-end mt-4">
+    <button mat-raised-button color="primary" (click)="updateUser()">Edit Profile</button>
+    <button mat-button color="warn" class="ms-2" (click)="logout()">Logout</button>
+  </div>
+</mat-card>
